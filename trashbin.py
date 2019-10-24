@@ -32,7 +32,7 @@ class TrashBin:
         else: #here I try to aviod two bins having the same coordiantes, maybe can be done in a smarter way...
             self.X_Y_coordinates = (random.randrange(map_origin, map_size, map_step), 
                                     random.randrange(map_origin, map_size, map_step))
-            while self.X_Y_coordinates == TrashBin.all_coordinates[TrashBin.trash_counter - 2] or self.X_Y_coordinates == (0,0):
+            while self.X_Y_coordinates in TrashBin.all_coordinates or self.X_Y_coordinates == (0,0):
                 self.X_Y_coordinates = (random.randrange(map_origin, map_size, map_step), 
                                         random.randrange(map_origin, map_size, map_step))
             TrashBin.all_coordinates.append(self.X_Y_coordinates)

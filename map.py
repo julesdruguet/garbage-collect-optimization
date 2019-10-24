@@ -34,7 +34,9 @@ class Map:
         
     def draw(self):
 #        fig, ax = plt.subplots()
+        
         ax = plt.subplot()
+        
         ax.scatter(self.bins_x, self.bins_y)
 
         major_ticks = np.arange(0, self.input_size[0], self.step)
@@ -45,6 +47,7 @@ class Map:
 #        fig.tight_layout()
         
         plt.show()
+       
         
 if __name__ == '__main__':
     map_origin = 0
@@ -53,6 +56,5 @@ if __name__ == '__main__':
     amount_of_trash_bins = 50
     trashbins = [TrashBin(map_origin, map_size, map_step) for x in range(amount_of_trash_bins)]
     bins_coor = trashbins[0].all_coordinates
-
     city = Map((map_size, map_size), map_step, bins_coor)
     city.draw()
