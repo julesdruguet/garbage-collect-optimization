@@ -25,8 +25,9 @@ VL53L0X
       Thus possibility for more sensors
     AES encryption (for data security and integrity, it is IoT after all)
     1.65V-3.6V, 3.3v possible
-    in "low power runmode" 5.8-6.8 uA
-    in "low power waitmode" 3.7-4.1 uA
+    in "low power runmode" 6.2-6.8 uA (-40 to 55 degrees C) 6.73 (at max 25)
+    in "low power waitmode" 3.7-4.1 uA (-40 to 55 degrees C) 4.21 (at max 25)
+    in "active-halt mode" - RTC running - 0.92-1.32uA (-40 to 55 degrees C) 2.25 (at max 25)
     
 # Communication to the world
   Wifi, Zigbee, GSM.
@@ -63,8 +64,19 @@ VL53L0X
       Power = (Ihw*V*(24h-2*measuretime)+Imeas*V*2*measuretime)/24hr
     Normal measure time is 33ms, maybe we want more samples? lets assume 10 measurements and we take the average.
     33ms*10 = 0.33s = 0.33s/3600 = 0.00009166666667hr
-      Power = (Ihw*V*(24hr-2*0.00009166666667hr)+Imeas*V*2*0.00009166666667hr)/24hr = 0.00001697883229 Wh = 16.97883229 uWh
+      Power = (Ihw*V*(24hr-2*0.00009166666667hr)+Imeas*V*2*0.00009166666667hr)/24hr = 16.97883229 uWh @ 3.3v
   # MCU power
-    
+      MCU is in active-halt mode most of the time, when RTC triggers a sensor event, MCU wakes up to LP-runmode, triggers sensor - goes to LP-waitmode - recieves sensor interrupt - wakes to LP-runmode, reads sensor, triggers sensor - etc, untill sensor has read 10 times - LP-runmode, does average of 10 readings, sends date to communication module that transfers it along - goes back to active-halt.
+      
+      Thus MCU is in LP-waitmode for 10*33ms. In LP-runmode for lets say 10s and in active halt for 24hr - 2(wait + run)
+      Assuming max power 25 degrees interval:
+      Power = (Ihalt*V*(24hr-2(twait+trun))+Iwait*V*twait+Irun*V*trun)/24hr = 7.425848 uWh @ 3.3v
+      
+      
+ # To run sensor and MCU for an hr is 24,4uW, for 24 hrs is 585,7uW. for 365 days is 0,2137W. 
+ Mouser has a heat resistant button cell (-40 to 125 degrees C) that holds 1000mAh at 3v ie. 3Wh. This cell would keep sensor and MCU running for ~15.4 years. 
+ 
+ # Now lets add communication to the world. This is expensive, power-budget wise.
+   
     
   
