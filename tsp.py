@@ -42,7 +42,6 @@ class Tsp:
         """Entry point of the program."""
         # Instantiate the data problem.
         data = self.create_data_model(bins_to_collect)
-        print('\n'.join([''.join(['{:15}'.format(item) for item in row]) for row in data['distance_matrix']]))
 
         # Create the routing index manager.
         manager = pywrapcp.RoutingIndexManager(len(data['distance_matrix']),

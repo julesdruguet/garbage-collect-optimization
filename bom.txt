@@ -1,0 +1,70 @@
+# Sensor
+
+VL53L0X
+
++ comes with c API for range sensing.
++ can do hardware standby, has interupt.
++ I2C protocol (up to 400kHz)
++ 2.6-3.5V, 3.3V possible
+   in "HW standby" 3-7uA typ 5uA
+   in "SW standby" 4-9uA typ 6uA
+   in "active ranging 33ms" avg consumption 19mA
+   could also just be powered off
+
+# MCU
+  needs support for C and I2C, aswell as low power.
+  can be 8bit, 16bit or 32bit
+  
+  8bit:
+  STM8L162R8
+    8bit low power mcu
+    Has 8bit C compiler "CXSTM8"
+    1x I2C (fast mode 400kHz)
+    2x SPI
+    3x UART
+      Thus possibility for more sensors
+    AES encryption (for data security and integrity, it is IoT after all)
+    1.65V-3.6V, 3.3v possible
+    in "low power runmode" 5.8-6.8 uA
+    in "low power waitmode" 3.7-4.1 uA
+    
+# Communication to the world
+  Wifi, Zigbee, GSM.
+  Has to be low power, with sleep capability.
+  https://predictabledesigns.com/wireless_technologies_bluetooth_wifi_zigbee_gsm_lte_lora_nb-iot_lte-m/
+  
+  2.4GHz uses alot of power,
+  GSM is getting phased out, longevity limited.
+  
+  Z-wave?
+  
+  Zigbee - Telit
+    Interface: RS232 TTL
+  
+    Ze51 - 1km range (line of sight, external antenna)
+     2-3.6V, 3.3V possible
+      Rx: 26mA
+      Tx: 35mA
+      Standby: 2uA
+      Sleep: 1uA
+    
+    Ze61 - 4km range (line of sight, external antenna)
+      2-3.6V, 3.3V possible
+      Rx: 31mA
+      Tx: 150mA
+      Standby: 2.5uA
+      Sleep: 1.5uA
+
+# Complete system
+  # sensor power
+    
+    Sensor is off most of the time, only senses 2 times a day.
+    Assume HW standby if not measuring.
+      Power = (Ihw*V*(24h-2*measuretime)+Imeas*V*2*measuretime)/24hr
+    Normal measure time is 33ms, maybe we want more samples? lets assume 10 measurements and we take the average.
+    33ms*10 = 0.33s = 0.33s/3600 = 0.00009166666667hr
+      Power = (Ihw*V*(24hr-2*0.00009166666667hr)+Imeas*V*2*0.00009166666667hr)/24hr = 0.00001697883229 Wh = 16.97883229 uWh
+  # MCU power
+    
+    
+  
