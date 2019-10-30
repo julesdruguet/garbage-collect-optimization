@@ -5,6 +5,7 @@ Created on Thu Oct 24 19:30:40 2019
 @author: aleks
 """
 import random
+import warnings
 
 class TrashBin:
     ''' Trash bin class '''
@@ -28,6 +29,14 @@ class TrashBin:
         '''
         Parametrized constructor of TrashBin class
         '''
+        #Error handling
+        if map_origin != 0:
+            raise ValueError("Map must have its origin at 0")
+        if map_step > map_size:
+            raise ValueError("Step cannot be greater than map size")
+        if map_size % map_step != 0:
+            raise ValueError("Step must be a multple of map size")
+
         #after instance of the class is created we increse the class variable counter
         TrashBin.trash_counter += 1
 
@@ -57,6 +66,7 @@ class TrashBin:
         When this method is called, amount of trash is the bin is increased by the corresponding filling rate
         '''
         if self.current_level + self.filling_rate > self.capacity:
+            warnings.warn("Exceeded trash limit, setting level to: %d" % (self.capacity))
             self.current_level = self.capacity
         else:
             self.current_level += self.filling_rate
