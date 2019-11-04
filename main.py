@@ -9,21 +9,28 @@ from map import Map
 from trashbin import TrashBin
 from tsp import Tsp
 
+
+def get_labeled_bin(bins, thresh):
+    bins_ready = [single_bin.X_Y_coordinates for single_bin in bins if single_bin.current_level > thresh]
+    bins_notready = [single_bin.X_Y_coordinates for single_bin in bins if single_bin.current_level <= thresh]
+
+    return bins_ready, bins_notready
+
 if __name__ == '__main__':
-    #initial parameters of simulation
     map_origin = 0
     map_size = 1000
     map_step = 100
+    
+    #initial parameters of simulation
     amount_of_trash_bins = 50
     threshold = 25
+    # threshold = 0 #base case
 
     #creates a list of trashbins of an amount given by amount_of_trash_bins variable
     trashbins = [TrashBin(map_origin, map_size, map_step) for x in range(amount_of_trash_bins)]
 
-    #here coordiantes are separted into two lists
-    bins_ready_for_pickup = [trashbin.X_Y_coordinates for trashbin in trashbins if trashbin.current_level > threshold]
-    bins_not_ready_for_pickup = [trashbin.X_Y_coordinates for trashbin in trashbins if trashbin.current_level <= threshold]
-
+    #here coordiantes are separted into two lists using get_labeled_bin
+    bins_ready_for_pickup, bins_not_ready_for_pickup = get_labeled_bin(trashbins, threshold)
     itinerary_coordinates = []
 
     #create Map instance
@@ -48,6 +55,6 @@ if __name__ == '__main__':
         for trashbin in trashbins:
             trashbin.increment_trash()
 
-        bins_ready_for_pickup = [trashbin.X_Y_coordinates for trashbin in trashbins if trashbin.current_level > threshold]
-        bins_not_ready_for_pickup = [trashbin.X_Y_coordinates for trashbin in trashbins if trashbin.current_level <= threshold]
+        bins_ready_for_pickup, bins_not_ready_for_pickup = get_labeled_bin(trashbins, threshold)
+
         itinerary_coordinates = []

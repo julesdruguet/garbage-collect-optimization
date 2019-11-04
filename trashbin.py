@@ -60,7 +60,6 @@ class TrashBin:
         self.capacity = 50
         self.bin_id = TrashBin.trash_counter
 
-
     def increment_trash(self):
         '''
         When this method is called, amount of trash is the bin is increased by the corresponding filling rate
@@ -79,6 +78,8 @@ class TrashBin:
         When this method is called, level of trash, for a given bin is set to 0
         '''
         self.current_level = 0
+
+
 
 if __name__ == '__main__':
     pass

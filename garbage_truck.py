@@ -21,7 +21,7 @@ class GarbageTruck:
 			raise ValueError("Garbage truck is full")
 		self.current_level = self.capacity - collected_amount
 
-	def empty_trashbin(self):
+	def empty_truck(self):
 		'''
 		When this method is called, level of trash, for a given bin is set to 0
 		'''
