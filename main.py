@@ -36,9 +36,10 @@ if __name__ == '__main__':
     map_origin = 0
     map_size = 1000
     map_step = 100
-    
+    garbage_center = (0, 0)
+
     #initial parameters of simulation
-    amount_of_trash_bins = 50
+    amount_of_trash_bins = 5
     threshold = 25
     # threshold = 0 #base case
 
@@ -51,19 +52,19 @@ if __name__ == '__main__':
     itinerary_coordinates = []
 
     #create Map instance
-    city = Map((map_size, map_size), map_step, bins_ready_for_pickup, bins_not_ready_for_pickup, itinerary_coordinates)
+    city = Map((map_size, map_size), map_step, bins_ready_for_pickup, bins_not_ready_for_pickup, itinerary_coordinates, garbage_center)
 
     #basic simulation, right now only increase of trash level is visible
     for x in range(10):
 
         if (x % 3) == 0:
-
-            route = Tsp(bins_ready_for_pickup)
+            bins_and_center = bins_ready_for_pickup.copy()
+            bins_and_center.insert(0, garbage_center)
+            route = Tsp(bins_and_center)
             print("%d" % total_trash)
 
-            # exit()
             for coordinates_index in route.route_itinerary:
-                itinerary_coordinates.append(bins_ready_for_pickup[coordinates_index])
+                itinerary_coordinates.append(bins_and_center[coordinates_index])
             # if the trashbin has been collected, empty it
             empty_trashbins(trashbins, itinerary_coordinates)
 
