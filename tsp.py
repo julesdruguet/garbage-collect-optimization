@@ -37,7 +37,7 @@ class Tsp:
         plan_output += 'Route distance: {}\n'.format(route_distance)
         return route_itinerary, route_distance
 
-
+        
     def __init__(self, bins_to_collect):
         """Entry point of the program."""
         # Instantiate the data problem.

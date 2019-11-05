@@ -29,6 +29,8 @@ class Map:
         self.input_size = input_size
         self.step = step
 
+        self.pickedup_X = []
+        self.pickedup_X = []
         self.ready_to_pickup_X = [coor[0] for coor in bins_ready_to_pickup]
         self.ready_to_pickup_Y = [coor[1] for coor in bins_ready_to_pickup]
         self.not_ready_to_pickup_X = [coor[0] for coor in bins_not_ready_to_pickup]
@@ -52,7 +54,7 @@ class Map:
         self.annotations_list = []
         self.fig.show()
 
-    def update_trash(self, bins_ready_to_pickup, bins_not_ready_to_pickup, itinerary_coordinates):
+    def update_trash(self, bins_ready_to_pickup, bins_not_ready_to_pickup, bins_pickedup=[], itinerary_coordinates=[]):
         '''
         @param bins_ready_to_pickup: list of tuples contining coordiantes bins, which are ready for pick up
         @type bins_ready_to_pickup: list
@@ -66,6 +68,8 @@ class Map:
         '''
         self.ready_to_pickup_X = [coor[0] for coor in bins_ready_to_pickup]
         self.ready_to_pickup_Y = [coor[1] for coor in bins_ready_to_pickup]
+        self.pickedup_X = [coor[0] for coor in bins_pickedup]
+        self.pickedup_Y = [coor[1] for coor in bins_pickedup]
         self.not_ready_to_pickup_X = [coor[0] for coor in bins_not_ready_to_pickup]
         self.not_ready_to_pickup_Y = [coor[1] for coor in bins_not_ready_to_pickup]
         self.itinerary_coordinates = itinerary_coordinates
@@ -77,6 +81,7 @@ class Map:
 
         #dots setting
         self.ax.scatter(self.ready_to_pickup_X, self.ready_to_pickup_Y, color = 'red')
+        self.ax.scatter(self.pickedup_X, self.pickedup_Y, color = 'yellow')
         self.ax.scatter(self.not_ready_to_pickup_X, self.not_ready_to_pickup_Y, color = 'green')
         self.ax.scatter(self.garbage_center[0], self.garbage_center[1], color = 'blue', s=144)
 
