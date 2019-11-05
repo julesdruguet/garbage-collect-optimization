@@ -8,7 +8,7 @@ class Map:
     '''
     Map class, it has mainly visualization purpose
     '''
-    def __init__(self, input_size, step, bins_ready_to_pickup, bins_not_ready_to_pickup, itinerary_coordinates):
+    def __init__(self, input_size, step, bins_ready_to_pickup, bins_not_ready_to_pickup, itinerary_coordinates, garbage_center):
         '''
         @param input_size: single value of hwo big is our map/city end e.g. input_size = 100, will create a 100x100 map
         @type input_size: int
@@ -34,6 +34,7 @@ class Map:
         self.not_ready_to_pickup_X = [coor[0] for coor in bins_not_ready_to_pickup]
         self.not_ready_to_pickup_Y = [coor[1] for coor in bins_not_ready_to_pickup]
         self.itinerary_coordinates = itinerary_coordinates
+        self.garbage_center = garbage_center
 
 #        for x in range (0, self.input_size[0], self.step):
 #            for y in range(0, self.input_size[0], self.step):
@@ -77,6 +78,7 @@ class Map:
         #dots setting
         self.ax.scatter(self.ready_to_pickup_X, self.ready_to_pickup_Y, color = 'red')
         self.ax.scatter(self.not_ready_to_pickup_X, self.not_ready_to_pickup_Y, color = 'green')
+        self.ax.scatter(self.garbage_center[0], self.garbage_center[1], color = 'blue', s=144)
 
         #grid setting
         self.major_ticks = np.arange(0, self.input_size[0], self.step)
