@@ -21,7 +21,7 @@ class Tsp:
 
     def print_solution(self, manager, routing, assignment):
         """Prints assignment on console."""
-        print('Objective: {}'.format(assignment.ObjectiveValue()))
+        print('Distance traveled: {}'.format(assignment.ObjectiveValue()))
         index = routing.Start(0)
         plan_output = 'Route for vehicle 0:\n'
         route_distance = 0
