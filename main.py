@@ -50,6 +50,8 @@ if __name__ == '__main__':
     map_origin = 0
     map_size = 1000
     map_step = 100
+    iterations = 20
+    pickup_iter = 3
     garbage_center = (0, 0)
 
     #initial parameters of simulation
@@ -57,6 +59,7 @@ if __name__ == '__main__':
     threshold = 25
     truck_capacity = 50 * 50
     # threshold = 0 #base case
+
 
     #creates a list of trashbins of an amount given by amount_of_trash_bins variable
     trashbins = [TrashBin(map_origin, map_size, map_step) for x in range(amount_of_trash_bins)]
@@ -72,9 +75,9 @@ if __name__ == '__main__':
     city.show_map()        
     input("Press Enter to continue...")
 
-    #basic simulation, right now only increase of trash level is visible
-    for x in range(20):
-        if (x % 3) == 0:
+    #basic simulation
+    for x in range(iterations):
+        if (x % pickup_iter) == 0:
             city.update_trash(bins_ready_for_pickup, bins_not_ready_for_pickup,)
             city.show_map()
             print(bins_ready_for_pickup, 'bins_ready_for_pickup')
