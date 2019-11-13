@@ -74,7 +74,7 @@ class Map:
         self.not_ready_to_pickup_Y = [coor[1] for coor in bins_not_ready_to_pickup]
         self.itinerary_coordinates = itinerary_coordinates
 
-    def show_map(self):
+    def show_map(self, title):
         '''
         This method adds scatter and grid lines to the plot
         '''
@@ -93,6 +93,10 @@ class Map:
         self.ax.set_yticklabels([])
         self.ax.grid(which='both')
         self.ax.grid(True)
+
+        #title setting
+        self.fig.suptitle(title, fontsize=16)
+
 
         # Remove previous annotations
         for i, a in enumerate(self.annotations_list):
