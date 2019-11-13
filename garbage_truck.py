@@ -7,7 +7,7 @@ class GarbageTruck:
 	'''
 	truckid = 0
 
-	def __init__(self, origin, capacity):
+	def __init__(self, origin, capacity, step):
 		'''
 		@param origin: tuple contiaing X and Y starting cordinates for the garbage truck
 		@type origin: tuple
@@ -24,6 +24,7 @@ class GarbageTruck:
 		self.bins_pickedup = 0
 		self.distance = 0
 		self.isfull = False
+		self.map_step = step
 
 	def collect_trash(self, collected_amount):
 		if self.current_level - collected_amount < 0:
@@ -34,9 +35,9 @@ class GarbageTruck:
 			self.current_level -= collected_amount
 			self.bins_pickedup += 1
 
-	def update_data(self, distance, step):
+	def update_data(self, distance):
 		self.distance = distance
-		self.time = (self.bins_pickedup * 10) + (distance / step * 15)
+		self.time = (self.bins_pickedup * 5) + (distance / self.map_step * 15)
 
 	def empty_truck(self):
 		'''
