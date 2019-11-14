@@ -1,0 +1,8 @@
+iteration,truck id,distance,time,trash collected
+0,truck#1,4000,660.0,485
+3,truck#1,4600,805.0,484
+6,truck#1,4200,800.0,494
+9,truck#1,4400,880.0,476
+12,truck#1,4800,990.0,491
+15,truck#1,4400,980.0,481
+18,truck#1,4400,1030.0,492

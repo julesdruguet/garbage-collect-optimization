@@ -11,6 +11,8 @@ from tsp import Tsp
 from garbage_truck import GarbageTruck
 import sys
 import json
+from time import gmtime, strftime
+import csv
 
 def import_parameters():
     try:
@@ -80,16 +82,29 @@ def redraw_map(city, bins_ready_for_pickup, bins_not_ready_for_pickup, title, *a
     if len(args ) == 0:
         city.update_trash(bins_ready_for_pickup, bins_not_ready_for_pickup)
         city.show_map(title)
-        input("Press Enter to continue...")
+        # input("Press Enter to continue...")
     else:
         city.update_trash(bins_ready_for_pickup, bins_not_ready_for_pickup, args[0], args[1])
         city.show_map(title)
-        input("Press Enter to continue...")
+        # input("Press Enter to continue...")
+
+def log_data(data):
+    print(data)
+    name = './logs/log_' + strftime('%Y-%m-%d-%H-%M.csv') 
+    myFile = open(name, 'w')
+    with myFile:
+        writer = csv.writer(myFile)
+        writer.writerows(data)
+         
+    print("Writing complete")
+    
+
 
 if __name__ == '__main__':
     parameters = import_parameters()
     print(parameters)
     trashbins, truck, bins_ready_for_pickup, bins_not_ready_for_pickup, itinerary_coordinates, city = setup(parameters)
+    data = [['iteration', 'truck id', 'distance', 'time', 'trash collected']]
 
     #basic simulation
     for x in range(parameters['iterations']):
@@ -104,13 +119,11 @@ if __name__ == '__main__':
 
             redraw_map(city, bins_ready_for_pickup, bins_not_ready_for_pickup, 'Trash level at the pick up', bins_and_center, itinerary_coordinates)
 
-            truck.update_data(route.route_distance)
-            truck.print_data()
-
+            truck.update_truck_data(route.route_distance)
+            data.append(truck.get_truck_data(x))
             # if the trashbin has been collected, empty it
             empty_trashbins(trashbins, itinerary_coordinates)
             bins_ready_for_pickup, bins_not_ready_for_pickup = get_labeled_bin(trashbins, parameters['threshold'])
-
             redraw_map(city, bins_ready_for_pickup, bins_not_ready_for_pickup, 'Trash level after the pick up')
 
             #empty truck
@@ -121,3 +134,4 @@ if __name__ == '__main__':
         redraw_map(city, bins_ready_for_pickup, bins_not_ready_for_pickup, 'Trash level after single incrementation') 
 
         itinerary_coordinates = []
+    log_data(data)
