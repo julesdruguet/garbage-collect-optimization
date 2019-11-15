@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 
 
 class Map:
+
+
     '''
     Map class, it has mainly visualization purpose
     '''
@@ -37,6 +39,7 @@ class Map:
         self.not_ready_to_pickup_Y = [coor[1] for coor in bins_not_ready_to_pickup]
         self.itinerary_coordinates = itinerary_coordinates
         self.garbage_center = garbage_center
+        self.colors = ['b', 'y', 'c', 'm', 'k']
 
 #        for x in range (0, self.input_size[0], self.step):
 #            for y in range(0, self.input_size[0], self.step):
@@ -81,7 +84,6 @@ class Map:
 
         #dots setting
         self.ax.scatter(self.ready_to_pickup_X, self.ready_to_pickup_Y, color = 'red')
-        self.ax.scatter(self.pickedup_X, self.pickedup_Y, color = 'yellow')
         self.ax.scatter(self.not_ready_to_pickup_X, self.not_ready_to_pickup_Y, color = 'green')
         self.ax.scatter(self.garbage_center[0], self.garbage_center[1], color = 'blue', s=144)
 
@@ -103,10 +105,14 @@ class Map:
             a.remove()
         self.annotations_list[:] = []
 
-        # Annotate pick up order
-        for i in range(len(self.itinerary_coordinates)):
-            annotation = self.ax.annotate(i, (self.itinerary_coordinates[i][0], self.itinerary_coordinates[i][1]))
-            self.annotations_list.append(annotation)
+        # Annotate pick up order for each truck
+        for route_num, truck_itinerary in enumerate(self.itinerary_coordinates):
+            X = [truck_itinerary[i][0] for i in range(len(truck_itinerary))]
+            Y = [truck_itinerary[i][1] for i in range(len(truck_itinerary))]
+            self.ax.scatter(X, Y, color = self.colors[route_num])
+            for i in range(len(truck_itinerary)):
+                annotation = self.ax.annotate(i, (truck_itinerary[i][0], truck_itinerary[i][1]))
+                self.annotations_list.append(annotation)
 
         #updates plot instead of creating a new one
         self.fig.canvas.draw()

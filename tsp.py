@@ -4,7 +4,7 @@ from ortools.constraint_solver import pywrapcp
 
 class Tsp:
 
-    def create_data_model(self, bins_to_collect):
+    def create_data_model(self, bins_to_collect, num_vehicles):
         """Stores the data for the problem."""
         data = {}
         data['distance_matrix'] = []
@@ -14,34 +14,41 @@ class Tsp:
                 manhattan_distance = abs(bins_to_collect[i][0]-bins_to_collect[j][0])+abs(bins_to_collect[i][1]-bins_to_collect[j][1])
                 distances_from_i.append(manhattan_distance)
             data['distance_matrix'].append(distances_from_i)
-        data['num_vehicles'] = 1
+        data['num_vehicles'] = num_vehicles
         data['depot'] = 0
         return data
 
 
-    def print_solution(self, manager, routing, assignment):
-        """Prints assignment on console."""
-        print('Distance traveled: {}'.format(assignment.ObjectiveValue()))
-        index = routing.Start(0)
-        plan_output = 'Route for vehicle 0:\n'
-        route_distance = 0
-        route_itinerary = []
-        while not routing.IsEnd(index):
-            plan_output += ' {} ->'.format(manager.IndexToNode(index))
-            route_itinerary.append(manager.IndexToNode(index))
-            previous_index = index
-            index = assignment.Value(routing.NextVar(index))
-            route_distance += routing.GetArcCostForVehicle(previous_index, index, 0)
-        plan_output += ' {}\n'.format(manager.IndexToNode(index))
-        print(plan_output)
-        plan_output += 'Route distance: {}\n'.format(route_distance)
-        return route_itinerary, route_distance
+    def print_solution(self, data, manager, routing, solution):
+        """Prints solution on console."""
+        max_route_distance = 0
+        solution_matrix = []
+        for vehicle_id in range(data['num_vehicles']):
+            index = routing.Start(vehicle_id)
+            # distance, route
+            solution_matrix.append([0, []])
+            plan_output = 'Route for vehicle {}:\n'.format(vehicle_id)
+            route_distance = 0
+            while not routing.IsEnd(index):
+                plan_output += ' {} -> '.format(manager.IndexToNode(index))
+                solution_matrix[vehicle_id][1].append(manager.IndexToNode(index))
+                previous_index = index
+                index = solution.Value(routing.NextVar(index))
+                route_distance += routing.GetArcCostForVehicle(
+                    previous_index, index, vehicle_id)
+            plan_output += '{}\n'.format(manager.IndexToNode(index))
+            plan_output += 'Distance of the route: {}m\n'.format(route_distance)
+            #print(plan_output)
+            max_route_distance = max(route_distance, max_route_distance)
+            solution_matrix[vehicle_id][0] = route_distance
+        #print('Maximum of the route distances: {}m'.format(max_route_distance))
+        print(solution_matrix)
+        return solution_matrix
 
-        
-    def __init__(self, bins_to_collect):
+    def __init__(self, bins_to_collect, num_vehicles):
         """Entry point of the program."""
         # Instantiate the data problem.
-        data = self.create_data_model(bins_to_collect)
+        data = self.create_data_model(bins_to_collect, num_vehicles)
 
         # Create the routing index manager.
         manager = pywrapcp.RoutingIndexManager(len(data['distance_matrix']),
@@ -63,14 +70,26 @@ class Tsp:
         # Define cost of each arc.
         routing.SetArcCostEvaluatorOfAllVehicles(transit_callback_index)
 
+        # Add Distance constraint.
+        dimension_name = 'Distance'
+        routing.AddDimension(
+            transit_callback_index,
+            0,  # no slack
+            3000,  # vehicle maximum travel distance
+            True,  # start cumul to zero
+            dimension_name)
+        distance_dimension = routing.GetDimensionOrDie(dimension_name)
+        distance_dimension.SetGlobalSpanCostCoefficient(100)
+
+
         # Setting first solution heuristic.
         search_parameters = pywrapcp.DefaultRoutingSearchParameters()
         search_parameters.first_solution_strategy = (
             routing_enums_pb2.FirstSolutionStrategy.PATH_CHEAPEST_ARC)
 
         # Solve the problem.
-        assignment = routing.SolveWithParameters(search_parameters)
+        solution = routing.SolveWithParameters(search_parameters)
 
         # Print solution on console.
-        if assignment:
-            self.route_itinerary, self.route_distance = self.print_solution(manager, routing, assignment)
+        if solution:
+            self.routes = self.print_solution(data, manager, routing, solution)

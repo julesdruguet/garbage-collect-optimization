@@ -1,13 +1,13 @@
 {
-	"map_origin" : 0,
-    "map_size" : 1000,
-    "map_step" : 100,
-    "iterations" : 20,
-    "pickup_iter" : 3,
-    "garbage_center" : [0, 0],
-
-    "amount_of_trash_bins" : 40,
-    "threshold" : 25,
-    "bin_capacity" : 50,
-    "truck_capacity_bins_no" : 10
+  "map_origin": 0,
+  "map_size": 1000,
+  "map_step": 100,
+  "iterations": 20,
+  "pickup_iter": 3,
+  "garbage_center": [500, 500],
+  "amount_of_trash_bins": 40,
+  "threshold": 10,
+  "bin_capacity": 50,
+  "truck_capacity_bins_no": 10,
+  "num_vehicles": 4
 }
