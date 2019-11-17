@@ -83,15 +83,15 @@ def redraw_map(city, bins_ready_for_pickup, bins_not_ready_for_pickup, title, *a
     if len(args ) == 0:
         city.update_trash(bins_ready_for_pickup, bins_not_ready_for_pickup)
         city.show_map(title)
-        input("Press Enter to continue...")
+        # input("Press Enter to continue...")
     else:
         city.update_trash(bins_ready_for_pickup, bins_not_ready_for_pickup, args[0], args[1])
         city.show_map(title)
-        input("Press Enter to continue...")
+        # input("Press Enter to continue...")
 
-def log_data(data):
-    print(data)
-    name = './logs/log_' + strftime('%Y-%m-%d-%H-%M.csv')
+def log_data(data, x):
+    # print(data, x)
+    name = './logs/log_' + x + '_' + strftime('%Y-%m-%d-%H-%M.csv')
     myFile = open(name, 'w')
     with myFile:
         writer = csv.writer(myFile)
@@ -106,6 +106,7 @@ if __name__ == '__main__':
     print(parameters)
     trashbins, trucks, bins_ready_for_pickup, bins_not_ready_for_pickup, itinerary_coordinates, city = setup(parameters)
     data = [['iteration', 'truck id', 'distance', 'time', 'trash collected']]
+    trashbin_data = [['iteration', 'bin id', 'filling rate', 'level' 'time since last pick up']]
 
     # simulation
     for x in range(parameters['iterations']):
@@ -140,9 +141,17 @@ if __name__ == '__main__':
             for truck in trucks:
                 truck.empty_truck()
 
+            
+            for b in trashbins:
+                trashbin_data.append([x, b.bin_id, b.filling_rate, b.current_level, b.time_since_last_collection])
+
         increment_trash_in_bins(trashbins)
         bins_ready_for_pickup, bins_not_ready_for_pickup = get_labeled_bin(trashbins, parameters['threshold'])
         redraw_map(city, bins_ready_for_pickup, bins_not_ready_for_pickup, 'Trash level after single incrementation')
 
+        for b in trashbins:
+            trashbin_data.append([x, b.bin_id, b.filling_rate, b.current_level, b.time_since_last_collection])
+
         itinerary_coordinates = []
-    log_data(data)
+    log_data(data, 'trucks')
+    log_data(trashbin_data, 'bins')

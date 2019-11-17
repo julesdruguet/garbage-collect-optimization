@@ -58,7 +58,8 @@ class TrashBin:
         self.filling_rate = random.randint(1, 10)
         self.current_level = random.randint(0, 50)
         self.capacity = 50
-        self.bin_id = TrashBin.trash_counter
+        self.bin_id = "bin#" + str(TrashBin.trash_counter)
+        self.time_since_last_collection = 0
 
     def increment_trash(self):
         '''
@@ -69,15 +70,16 @@ class TrashBin:
             self.current_level = self.capacity
         else:
             self.current_level += self.filling_rate
+        self.time_since_last_collection += 6
 
-        #print("Trash Bin no. %d, level: %d" %
-        #      (self.bin_id, self.current_level))
+
 
     def empty_trashbin(self):
         '''
         When this method is called, level of trash, for a given bin is set to 0
         '''
         self.current_level = 0
+        self.time_since_last_collection = 0
 
 
 
