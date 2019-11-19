@@ -39,7 +39,7 @@ class Map:
         self.not_ready_to_pickup_Y = [coor[1] for coor in bins_not_ready_to_pickup]
         self.itinerary_coordinates = itinerary_coordinates
         self.garbage_center = garbage_center
-        self.colors = ['b', 'y', 'c', 'm', 'k']
+        self.colors = ['b', 'y', 'c', 'm', 'k','b', 'y', 'c', 'm', 'k']
 
 #        for x in range (0, self.input_size[0], self.step):
 #            for y in range(0, self.input_size[0], self.step):

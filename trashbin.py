@@ -70,7 +70,7 @@ class TrashBin:
             self.current_level = self.capacity
         else:
             self.current_level += self.filling_rate
-        self.time_since_last_collection += 6
+        self.time_since_last_collection += 4.8
 
 
 
