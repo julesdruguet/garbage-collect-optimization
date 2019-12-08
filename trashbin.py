@@ -15,7 +15,7 @@ class TrashBin:
     trash_counter = 0
     random.seed(30)
 
-    def __init__(self, map_origin, map_size, map_step):
+    def __init__(self, map_origin, map_size, map_step, capacity):
         '''
         @param map_origin: single value of where does the map has its origin e.g. 0
         @type map_origin: int
@@ -55,9 +55,9 @@ class TrashBin:
             #coordinates are added to class variable all_coordinates in case we need it
             TrashBin.all_coordinates.append(self.X_Y_coordinates)
 
-        self.filling_rate = random.randint(1, 10)
-        self.current_level = random.randint(0, 50)
-        self.capacity = 50
+        self.filling_rate = random.randint(1, capacity / 5)
+        self.current_level = random.randint(0, capacity)
+        self.capacity = capacity
         self.bin_id = "bin#" + str(TrashBin.trash_counter)
         self.time_since_last_collection = 0
 

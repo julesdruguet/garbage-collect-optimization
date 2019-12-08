@@ -34,7 +34,7 @@ def import_parameters():
 
 def setup(parameters):
     #creates a list of trashbins of an amount given by amount_of_trash_bins variable
-    trashbins = [TrashBin(parameters['map_origin'], parameters['map_size'], parameters['map_step']) for x in range(parameters['amount_of_trash_bins'])]
+    trashbins = [TrashBin(parameters['map_origin'], parameters['map_size'], parameters['map_step'], parameters['bin_capacity']) for x in range(parameters['amount_of_trash_bins'])]
 
     trucks = [GarbageTruck(parameters['garbage_center'], parameters['truck_capacity'], parameters['map_step']) for x in range(parameters['num_vehicles'])]
 
@@ -83,11 +83,11 @@ def redraw_map(city, bins_ready_for_pickup, bins_not_ready_for_pickup, title, *a
     if len(args ) == 0:
         city.update_trash(bins_ready_for_pickup, bins_not_ready_for_pickup)
         city.show_map(title)
-        # input("Press Enter to continue...")
+        input("Press Enter to continue...")
     else:
         city.update_trash(bins_ready_for_pickup, bins_not_ready_for_pickup, args[0], args[1])
         city.show_map(title)
-        # input("Press Enter to continue...")
+        input("Press Enter to continue...")
 
 def log_data(data, x):
     # print(data, x)
@@ -153,5 +153,5 @@ if __name__ == '__main__':
             trashbin_data.append([x, b.bin_id, b.filling_rate, b.current_level, b.time_since_last_collection])
 
         itinerary_coordinates = []
-    log_data(data, 'trucks')
-    log_data(trashbin_data, 'bins')
+    # log_data(data, 'trucks')
+    # log_data(trashbin_data, 'bins')
