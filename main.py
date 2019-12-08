@@ -93,7 +93,7 @@ def redraw_map(city, bins_ready_for_pickup, bins_not_ready_for_pickup, title, *a
 
 def log_data(data, x, t):
     # print(data, x)
-    name = './logs/log_' + x + '_threshold%' + str(t) + "_" + strftime('%Y-%m-%d-%H-%M.csv')
+    name = './logs/log_' + x + '_threshold' + str(t) + "_" + strftime('%Y-%m-%d-%H-%M.csv')
     myFile = open(name, 'w')
     with myFile:
         writer = csv.writer(myFile)

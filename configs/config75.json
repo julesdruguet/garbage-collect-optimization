@@ -9,5 +9,5 @@
   "bin_capacity": 50,
   "threshold": 0.75,
   "truck_capacity_bins_no": 10,
-  "num_vehicles": 4
+  "num_vehicles": 10
 }
