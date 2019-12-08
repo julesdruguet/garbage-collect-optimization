@@ -37,7 +37,7 @@ class GarbageTruck:
 
 	def update_truck_data(self, distance):
 		self.distance = distance
-		self.time = (self.bins_pickedup * 5) + (distance / self.map_step * 15)
+		self.time = (self.bins_pickedup * 2) + (distance / self.map_step * 7)
 		self.trash_collected = self.capacity - self.space_left
 
 	def empty_truck(self):

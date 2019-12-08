@@ -13,7 +13,7 @@ class TrashBin:
     the trash bins and total number of created trashbins respectively '''
     all_coordinates = []
     trash_counter = 0
-    random.seed(30)
+    random.seed(50)
 
     def __init__(self, map_origin, map_size, map_step, capacity):
         '''
