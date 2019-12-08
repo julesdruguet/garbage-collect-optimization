@@ -59,7 +59,7 @@ class TrashBin:
         self.current_level = random.randint(0, capacity)
         self.capacity = capacity
         self.bin_id = "bin#" + str(TrashBin.trash_counter)
-        self.time_since_last_collection = 0
+        self.time_since_last_collection = 24
 
     def increment_trash(self):
         '''

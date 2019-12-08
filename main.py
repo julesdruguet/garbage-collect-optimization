@@ -26,6 +26,8 @@ def import_parameters():
                     params[name] = tuple(data[name])
                 elif name == 'truck_capacity_bins_no':
                     params['truck_capacity'] = data[name] * params['bin_capacity']
+                elif name == "threshold":
+                    params["threshold"] = params["bin_capacity"] * data[name]
                 else:
                     params[name] = data[name]
         return params
@@ -83,15 +85,15 @@ def redraw_map(city, bins_ready_for_pickup, bins_not_ready_for_pickup, title, *a
     if len(args ) == 0:
         city.update_trash(bins_ready_for_pickup, bins_not_ready_for_pickup)
         city.show_map(title)
-        input("Press Enter to continue...")
+        # input("Press Enter to continue...")
     else:
         city.update_trash(bins_ready_for_pickup, bins_not_ready_for_pickup, args[0], args[1])
         city.show_map(title)
-        input("Press Enter to continue...")
+        # input("Press Enter to continue...")
 
-def log_data(data, x):
+def log_data(data, x, t):
     # print(data, x)
-    name = './logs/log_' + x + '_' + strftime('%Y-%m-%d-%H-%M.csv')
+    name = './logs/log_' + x + '_threshold%' + str(t) + "_" + strftime('%Y-%m-%d-%H-%M.csv')
     myFile = open(name, 'w')
     with myFile:
         writer = csv.writer(myFile)
@@ -111,6 +113,9 @@ if __name__ == '__main__':
     # simulation
     for x in range(parameters['iterations']):
         if (x % parameters['pickup_iter']) == 0:
+            for b in trashbins:
+                if b.X_Y_coordinates in bins_ready_for_pickup:
+                    trashbin_data.append([x, b.bin_id, b.filling_rate, b.current_level, b.time_since_last_collection])
             redraw_map(city, bins_ready_for_pickup, bins_not_ready_for_pickup, 'Trash level before the pick up')
             # bins_and_center = truck_pickup(trashbins, bins_ready_for_pickup, truck)
             bins_and_center = bins_ready_for_pickup.copy()
@@ -142,16 +147,15 @@ if __name__ == '__main__':
                 truck.empty_truck()
 
             
-            for b in trashbins:
-                trashbin_data.append([x, b.bin_id, b.filling_rate, b.current_level, b.time_since_last_collection])
+            
 
         increment_trash_in_bins(trashbins)
         bins_ready_for_pickup, bins_not_ready_for_pickup = get_labeled_bin(trashbins, parameters['threshold'])
         redraw_map(city, bins_ready_for_pickup, bins_not_ready_for_pickup, 'Trash level after single incrementation')
 
-        for b in trashbins:
-            trashbin_data.append([x, b.bin_id, b.filling_rate, b.current_level, b.time_since_last_collection])
+        # for b in trashbins:
+        #     trashbin_data.append([x, b.bin_id, b.filling_rate, b.current_level, b.time_since_last_collection])
 
         itinerary_coordinates = []
-    # log_data(data, 'trucks')
-    # log_data(trashbin_data, 'bins')
+    log_data(data, 'trucks', parameters["threshold"])
+    log_data(trashbin_data, 'bins', parameters["threshold"])

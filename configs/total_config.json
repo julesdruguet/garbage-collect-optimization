@@ -7,7 +7,7 @@
   "garbage_center": [500, 500],
   "amount_of_trash_bins": 40,
   "bin_capacity": 50,
-  "threshold": 0.75,
+  "threshold": [0.01, 0.25, 0.5, 0.75],
   "truck_capacity_bins_no": 10,
-  "num_vehicles": 4
+  "num_vehicles": 10
 }
