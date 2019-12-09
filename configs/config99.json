@@ -1,0 +1,13 @@
+{
+  "map_origin": 0,
+  "map_size": 1000,
+  "map_step": 100,
+  "iterations": 21,
+  "pickup_iter": 5,
+  "garbage_center": [500, 500],
+  "amount_of_trash_bins": 40,
+  "bin_capacity": 50,
+  "threshold": 0.99,
+  "truck_capacity_bins_no": 10,
+  "num_vehicles": 10
+}
