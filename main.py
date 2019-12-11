@@ -85,11 +85,11 @@ def redraw_map(city, bins_ready_for_pickup, bins_not_ready_for_pickup, title, *a
     if len(args ) == 0:
         city.update_trash(bins_ready_for_pickup, bins_not_ready_for_pickup)
         city.show_map(title)
-        # input("Press Enter to continue...")
+        input("Press Enter to continue...")
     else:
         city.update_trash(bins_ready_for_pickup, bins_not_ready_for_pickup, args[0], args[1])
         city.show_map(title)
-        # input("Press Enter to continue...")
+        input("Press Enter to continue...")
 
 def log_data(data, x, t):
     # print(data, x)
